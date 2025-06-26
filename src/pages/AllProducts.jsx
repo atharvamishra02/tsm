@@ -1,6 +1,10 @@
-// src/pages/Shop.jsx
+import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useCart } from "../Context/CartContext";
+import { useCurrency } from "../Context/CurrencyContext";
+
+// ✅ Product images
 import k1 from "../assets/k1.jpg";
 import k2 from "../assets/k2.jpg";
 import s1 from "../assets/s1.jpg";
@@ -20,11 +24,7 @@ import r2 from "../assets/r2.webp";
 import c1 from "../assets/c1.jpg";
 import c2 from "../assets/c2.jpg";
 
-import { useContext } from "react";
-import React from "react";
-import { useCart } from "../Context/CartContext";
-import { useCurrency } from "../Context/CurrencyContext";
-
+// 🛍️ Product list
 const products = [
   { id: 401, name: "Nike Air Max", price: 120, image: k1 },
   { id: 402, name: "Nike Air rubberBand", price: 140, image: k2 },
@@ -46,75 +46,66 @@ const products = [
   { id: 42, name: "Hard Charcoal", price: 100, image: c2 },
 ];
 
-const AllProducts = () => {
-  const { addToCart } = useCart();
-  const navigate = useNavigate();
+const Shop = () => {
   const { currency, convert } = useCurrency();
+  const navigate = useNavigate();
 
   return (
-    <motion.div
-      className="min-h-screen bg-gradient-to-br from-gray-900 px-50 via-gray-800 to-black text-white py-40 px-6 flex flex-col items-center animate-fade-in"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 1 }}
-    >
-      <h1 className="text-4xl font-bold mb-4">🛒 Welcome to the Shop</h1>
-      <p className="text-gray-400 mb-8 text-center">
-        Find the best sneakers for your style!
-      </p>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
-        {products.map((item) => (
-          <motion.div
-            key={item.id}
-            className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all cursor-pointer hover:scale-105 transform duration-300"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-60 object-cover rounded-md mb-4 border border-white/10"
-            />
-            <h2 className="text-xl font-semibold">{item.name}</h2>
-            <p className="text-blue-400 font-bold">
-              {currency} {convert(item.price)}
-            </p>
-            <div className="flex gap-5">
-            <motion.button
-              className="mt-4 px-4 py-2 bg-black hover:bg-gray-700 text-white font-semibold rounded-lg w-full"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => addToCart(item)}
-            >
-              Add to Cart
-            </motion.button>
-            <motion.button
-              className="mt-4 px-4 py-2 bg-black hover:bg-gray-700 text-white font-semibold rounded-lg w-full"
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={() => {
-                addToCart(item); // Add item to cart first
-                navigate("/checkout"); // Then redirect to checkout
-              }}
-            >
-              Buy Now
-            </motion.button>
-            </div>
-          </motion.div>
-        ))}
-      </div>
-
-      <motion.button
-        className="mt-12 px-6 py-3 bg-gray-700 hover:bg-gray-600 text-white font-semibold text-lg rounded-lg shadow-lg"
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={() => navigate("/")}
+    <div className="bg-black min-h-screen py-15 text-yellow-600">
+      <motion.div
+        className="py-2 px-4 sm:px-6 md:px-10 max-w-7xl mx-auto"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
       >
-        🔙 Back to Home
-      </motion.button>
-    </motion.div>
+        <h1 className="text-4xl font-bold text-center mb-4 mt-10">
+          🛒 Collection
+        </h1>
+        <p className="text-center text-gray-600 mb-10 text-lg max-w-xl mx-auto">
+          Browse our curated collection of sneakers. Style meets comfort.
+        </p>
+
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {products.map((item) => (
+            <motion.div
+              key={item.id}
+              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform"
+              whileHover={{ scale: 1.05 }}
+              onClick={() =>
+                navigate("/buyitem", {
+                  state: {
+                    product: { ...item, quantity: 1 },
+                    currency,
+                  },
+                })
+              }
+            >
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-48 object-cover"
+              />
+              <div className="p-4">
+                <h2 className="text-lg font-semibold mb-1">{item.name}</h2>
+                <p className="text-black font-bold mb-3">
+                  {currency} {convert(item.price)}
+                </p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.button
+          className="mt-12 mx-auto block px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white font-semibold text-lg rounded-lg shadow-lg"
+          whileHover={{ scale: 1.1 }}
+          whileTap={{ scale: 0.9 }}
+          onClick={() => navigate("/")}
+        >
+          🔙 Back to Home
+        </motion.button>
+      </motion.div>
+    </div>
   );
 };
 
-export default AllProducts;
+export default Shop;

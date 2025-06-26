@@ -51,7 +51,7 @@ function App() {
       {/* Suspense for lazy pages */}
       <Suspense fallback={<div className="text-center py-20">Loading...</div>}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home/>} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<ContactForm />} />
           <Route path="/cart" element={<CartPage />} />

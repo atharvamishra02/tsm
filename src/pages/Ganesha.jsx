@@ -12,12 +12,12 @@ import g5 from "../assets/g5.jpg";
 import g6 from "../assets/g6.jpg";
 
 const GaneshaMurti = [
-  { id: 101, name: "Flute Krishna Idol", price: 350, image: g1 },
-  { id: 102, name: "Bal Krishna in Swing", price: 420, image: g2 },
-  { id: 103, name: "Krishna with Radha", price: 500, image: g3 },
-  { id: 104, name: "Makhan Chor Krishna", price: 390, image: g4 },
-  { id: 105, name: "Krishna with Cow", price: 450, image: g5 },
-  { id: 106, name: "Blessing Krishna", price: 400, image: g6 },
+  { id: 101, name: "Ganesh in Meditation", price: 350, image: g1 },
+  { id: 102, name: "Dancing Ganapati", price: 420, image: g2 },
+  { id: 103, name: "Ganesha with Modaks", price: 500, image: g3 },
+  { id: 104, name: "Blessing Ganesha Idol", price: 390, image: g4 },
+  { id: 105, name: "Antique Brass Ganesha", price: 450, image: g5 },
+  { id: 106, name: "Colorful Ganesh Idol", price: 400, image: g6 },
 ];
 
 const Ganesha = () => {
@@ -25,39 +25,38 @@ const Ganesha = () => {
   const { currency, convert } = useCurrency();
 
   return (
-    <>
+    <div className="bg-black min-h-screen text-white">
       {/* 🎥 Background Video */}
-      <div className="w-full relative h-screen overflow-hidden">
+      <div className="relative w-full h-[80vh] overflow-hidden">
         <video
           src={ganesha}
           autoPlay
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className="absolute w-full h-full object-cover"
         />
       </div>
 
-      {/* 📿 Ganesha Murti Showcase */}
+      {/* 🕉️ Ganesha Murti Section */}
       <motion.div
-        className="min-h-screen bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-50 text-yellow-800 py-16 px-6 flex flex-col items-center"
+        className="py-2 px-4 sm:px-6 md:px-10 max-w-7xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <h1 className="text-4xl font-bold mb-4">🕉️ Ganesha Murti Collection</h1>
-        <p className="text-gray-700 mb-10 text-center max-w-2xl text-lg">
+        <h1 className="text-4xl font-bold text-center mb-4 mt-8">🕉️ Ganesha Murti Collection</h1>
+        <p className="text-center text-gray-400 mb-10 text-lg max-w-xl mx-auto">
           Divine idols of Lord Ganesha crafted with devotion, grace, and tradition.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {GaneshaMurti.map((item) => (
             <motion.div
               key={item.id}
-              className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all cursor-pointer hover:scale-105 transform duration-300"
+              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-               onClick={() =>
+              onClick={() =>
                 navigate("/buyitem", {
                   state: {
                     product: { ...item, quantity: 1 },
@@ -69,12 +68,14 @@ const Ganesha = () => {
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-full h-60 object-cover rounded-md mb-4 border border-white/10"
+                className="w-full h-48 object-cover"
               />
-              <h2 className="text-xl font-semibold">{item.name}</h2>
-              <p className="text-blue-500 font-bold">
-                {currency} {convert(item.price)}
-              </p>
+              <div className="p-4 text-black">
+                <h2 className="text-lg font-semibold mb-1">{item.name}</h2>
+                <p className="text-yellow-600 font-bold">
+                  {currency} {convert(item.price)}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -89,7 +90,7 @@ const Ganesha = () => {
           🔙 Back to Home
         </motion.button>
       </motion.div>
-    </>
+    </div>
   );
 };
 

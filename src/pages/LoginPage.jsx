@@ -8,15 +8,14 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-
-    const user = login(email, password);
-    if (user) {
-      alert(`Welcome back, ${user.firstName}!`);
+    try {
+      await login(email, password);
+      alert("✅ Login successful!");
       navigate("/");
-    } else {
-      alert("Account not found. Please create an account first.");
+    } catch (err) {
+      alert("❌ Invalid credentials!");
     }
   };
 

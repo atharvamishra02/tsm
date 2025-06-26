@@ -20,19 +20,16 @@ const CreateAccountPage = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      signup(formData);
-      alert(`🎉 Welcome, ${formData.firstName}!`);
-
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      await signup(formData);
+      alert("🎉 Account created successfully!");
+      navigate("/");
     } catch (err) {
-      setError(err.message);
+      alert("❌ Error creating account");
     }
-  };
+  };  
 
   return (
     <div className="min-h-screen flex items-center py-35 justify-center bg-amber-50">

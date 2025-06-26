@@ -1,13 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { FaChevronDown } from "react-icons/fa";
+import { FaChevronDown, FaBars, FaTimes } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [scrolled, setScrolled] = useState(false);
 
@@ -22,7 +23,7 @@ const Navbar = () => {
     e.preventDefault();
     if (search.trim()) {
       navigate(`/search?query=${encodeURIComponent(search.trim())}`);
-      setShowSearch(false); // close search after submitting
+      setShowSearch(false);
     }
   };
 
@@ -43,7 +44,6 @@ const Navbar = () => {
 
     window.addEventListener("scroll", handleScroll);
     document.addEventListener("click", handleClickOutside);
-
     return () => {
       window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("click", handleClickOutside);
@@ -51,122 +51,176 @@ const Navbar = () => {
   }, []);
 
   const dropdowns = {
-    Jewellery: ["pendants", "Earrings", "Rings", "Chains", "Kanti Malas"],
+    Jewellery: ["Pendants", "Earrings", "Rings", "Chains", "Kanti Malas"],
     Murti: ["Krishna", "Shiva", "Hanuman", "Ganesha", "Lakshmi"],
     Custom: ["Custom-Murti", "Custom-Jewellery"],
-    support: ["Help Center", "Returns", "Shipping Info"],
+    Support: ["Help Center", "Returns", "Shipping Info"],
   };
 
   return (
     <nav
       className={`${
         scrolled
-          ? "bg-white text-black shadow-md"
+          ? "bg-white text-black shadow-sm"
           : "bg-transparent text-yellow-500"
-      } fixed top-0 w-full font-bold z-50 transition-all duration-300`}
+      } fixed top-0 w-full z-50 transition-all duration-300`}
     >
-      {/* Top Navbar */}
-      <div className="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center gap-y-3">
-        {/* Left - Nav Links */}
-        <div className="hidden md:flex gap-6 text-lg font-medium items-center">
-          <Link to="/" className="hover:text-yellow-400 transition">
-            Home
-          </Link>
-          <Link to="/about" className="hover:text-yellow-400 transition">
-            About
-          </Link>
-          <Link to="/cart">
-            <img
-              src="src/assets/shopping-cart.png"
-              alt="Cart"
-              className="h-6 inline"
-            />
+      <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+        {/* Left - Logo & Hamburger */}
+        <div className="flex items-center gap-4">
+          {/* Hamburger (Mobile only) */}
+          <button
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <FaTimes className="text-xl" />
+            ) : (
+              <FaBars className="text-xl" />
+            )}
+          </button>
+
+          {/* Logo */}
+          <Link
+            to="/"
+            className={`text md:text-2xl font-bold tracking-wide ${
+              scrolled ? "text-yellow-600" : "text-yellow-500"
+            }`}
+          >
+            The Spiritual Trend
           </Link>
         </div>
 
-        {/* Center - Logo */}
-        <Link
-          to="/"
-          className={`text-3xl font-extrabold ${
-            scrolled ? "text-yellow-500" : "text-yellow-400"
-          } tracking-wide absolute left-1/2 transform -translate-x-1/2`}
-        >
-          ThE SpIrItUaL TrEnD
-        </Link>
+        {/* Right - Search + User + Cart */}
+        <div className="flex items-center gap-3 md:gap-4">
+          {/* Search */}
+          <form onSubmit={handleSearch} className="relative" ref={searchRef}>
+            <button
+              type="button"
+              onClick={() => setShowSearch((prev) => !prev)}
+              className="text-xl px-2"
+            >
+              🔍
+            </button>
 
-        {/* Right - Search & Auth */}
-        <div className="flex items-center gap-4">
-          {/* Toggleable Search */}
-         <div className="relative flex items-center" ref={searchRef}>
-  <input
-    type="text"
-    value={search}
-    onChange={(e) => setSearch(e.target.value)}
-    placeholder="Search..."
-    className={`transition-all duration-300 ease-in-out px-3 py-1 rounded border border-yellow-500 focus:outline-none text-black bg-white
-      ${showSearch ? "w-48 opacity-100 mr-2" : "w-0 opacity-0 p-0 border-none"}
-    `}
-    style={{ transitionProperty: "width, opacity, padding" }}
-    autoFocus={showSearch}
-  />
+            {showSearch && (
+              <div className="absolute top-full mt-2 bg-white rounded shadow-lg p-2 z-50">
+                <input
+                  type="text"
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  placeholder="Search..."
+                  className="px-3 py-2 rounded border border-yellow-500 text-black w-48"
+                />
+                <button
+                  type="submit"
+                  className="ml-2 text-sm font-medium bg-yellow-500 text-white px-3 py-1 rounded hover:bg-yellow-600"
+                >
+                  Go
+                </button>
+              </div>
+            )}
+          </form>
 
-  <button
-    onClick={() => setShowSearch((prev) => !prev)}
-    className={`text-xl ${
-      scrolled ? "text-black" : "text-yellow-500"
-    } px-2 py-1 rounded hover:bg-yellow-100 transition`}
-    title="Search"
-  >
-    🔍
-  </button>
-</div>
-
-
-
-          {/* Auth */}
+          {/* User */}
           {user ? (
             <button
               onClick={handleLogout}
-              className="bg-red-600 hover:bg-red-700 text-white px-4 py-1 rounded-2xl"
+              className="bg-red-600 text-white px-3 py-1 rounded-xl hover:bg-red-700 text-sm"
             >
               Logout
             </button>
           ) : (
             <img
               src="/src/assets/user.png"
-              alt="User Icon"
+              alt="User"
               onClick={() => navigate("/Loginpage")}
-              className="w-6 h-6 border-yellow-500 cursor-pointer hover:scale-105 transition"
+              className="w-6 h-6 cursor-pointer hover:scale-105 transition"
             />
           )}
+
+          {/* Cart */}
+          <Link to="/cart">
+            <img
+              src="/src/assets/shopping-cart.png"
+              alt="Cart"
+              className="h-6 w-6 cursor-pointer hover:scale-110 transition"
+            />
+          </Link>
         </div>
       </div>
 
-      {/* Subnavbar with dropdowns */}
-      <div
-        className={`${
-          scrolled ? "text-black" : "bg-transparent text-yellow-500"
-        } py-1 transition-all duration-300`}
-      >
-        <div className="max-w-5xl mx-auto flex justify-center gap-16 text-lg font-semibold relative">
-          {Object.keys(dropdowns).map((key) => (
-            <div key={key} className="relative group">
+      {/* Desktop Menu */}
+      <div className="hidden md:flex justify-center gap-10 py-2 text-base font-medium">
+        <Link to="/" className="hover:text-yellow-400">
+          Home
+        </Link>
+        <Link to="/about" className="hover:text-yellow-400">
+          About
+        </Link>
+
+        {Object.entries(dropdowns).map(([key, items]) => (
+          <div key={key} className="relative group">
+            <button className="flex items-center gap-1 hover:text-yellow-400 transition">
+              {key}
+              <FaChevronDown className="text-xs mt-0.5" />
+            </button>
+            <div className="absolute hidden group-hover:block top-8 bg-white border rounded-md shadow-lg min-w-[10rem] text-yellow-600">
+              {items.map((item) => (
+                <Link
+                  key={item}
+                  to={`/${key.toLowerCase()}/${item
+                    .toLowerCase()
+                    .replace(/\s+/g, "-")}`}
+                  className="block px-4 py-2 hover:bg-yellow-100"
+                >
+                  {item}
+                </Link>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Mobile Menu (Hamburger Dropdown) */}
+      {mobileMenuOpen && (
+        <div className="md:hidden bg-white text-black px-6 py-4 space-y-4 shadow-md">
+          <Link
+            to="/"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block font-medium"
+          >
+            Home
+          </Link>
+          <Link
+            to="/about"
+            onClick={() => setMobileMenuOpen(false)}
+            className="block font-medium mt-2"
+          >
+            About
+          </Link>
+
+          {Object.entries(dropdowns).map(([key, items]) => (
+            <div key={key}>
               <button
                 onClick={() => toggleDropdown(key)}
-                className="flex items-center gap-2 hover:text-yellow-400 transition"
+                className="flex justify-between items-center w-full font-medium py-2"
               >
-                {key.charAt(0).toUpperCase() + key.slice(1)}
-                <FaChevronDown className="text-sm mt-0.5" />
+                {key} <FaChevronDown className="text-sm" />
               </button>
-
               {openDropdown === key && (
-                <div className="absolute top-10 left-1/2 -translate-x-1/2 bg-white border rounded-lg shadow-md py-2 w-48 z-50">
-                  {dropdowns[key].map((item, i) => (
+                <div className="ml-4 space-y-1 mt-1">
+                  {items.map((item) => (
                     <Link
-                      key={i}
-                      to={`/${key}/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                      className="block px-4 py-2 text-yellow-500 hover:bg-yellow-100 transition"
-                      onClick={() => setOpenDropdown(null)}
+                      key={item}
+                      to={`/${key.toLowerCase()}/${item
+                        .toLowerCase()
+                        .replace(/\s+/g, "-")}`}
+                      onClick={() => {
+                        setOpenDropdown(null);
+                        setMobileMenuOpen(false);
+                      }}
+                      className="block text-yellow-600"
                     >
                       {item}
                     </Link>
@@ -176,7 +230,7 @@ const Navbar = () => {
             </div>
           ))}
         </div>
-      </div>
+      )}
     </nav>
   );
 };

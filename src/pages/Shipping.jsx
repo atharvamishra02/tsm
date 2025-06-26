@@ -103,7 +103,7 @@ const Shipping = () => {
       >
         <p className="text-gray-700 mb-4">Need help tracking your package?</p>
         <button
-          onClick={() => navigate("/contact")}
+          onClick={() => navigate("/support")}
           className="px-6 py-3 bg-black text-white font-semibold rounded-full shadow-lg hover:bg-yellow-500 transition duration-300"
         >
           Contact Support

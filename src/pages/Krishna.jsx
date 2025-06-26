@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useCurrency } from "../context/CurrencyContext";
 
-// 🕉️ Media
+// 🎥 Media
 import krishna from "../assets/krishna.mp4";
 import k1 from "../assets/k1.jpg";
 import k2 from "../assets/k2.jpg";
@@ -12,7 +12,7 @@ import k4 from "../assets/k4.jpg";
 import k5 from "../assets/k5.jpg";
 import k6 from "../assets/k6.jpg";
 
-// 🕉️ Krishna products data
+// 🕉️ Krishna Products
 const krishnaProducts = [
   { id: 101, name: "Blue Peacock Kurta", price: 210, image: k1 },
   { id: 102, name: "Flute Charm Pendant", price: 150, image: k2 },
@@ -27,38 +27,39 @@ const Krishna = () => {
   const navigate = useNavigate();
 
   return (
-    <>
-      {/* 🌌 Background Video Only */}
-      <div className="w-full h-screen overflow-hidden">
+    <div className="bg-black min-h-screen text-white">
+      {/* 🎥 Background Video */}
+      <div className="relative w-full h-[80vh] overflow-hidden">
         <video
           src={krishna}
           autoPlay
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className="absolute w-full h-full object-cover object-top"
         />
       </div>
 
-      {/* 🙏 Krishna Product Grid */}
+      {/* 🛍 Krishna Collection */}
       <motion.div
-        className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black text-white py-16 px-6 flex flex-col items-center"
+        className="py-2 px-4 sm:px-6 md:px-10 max-w-7xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <h1 className="text-4xl font-bold mb-4">🕉️ Krishna Collection</h1>
-        <p className="text-gray-300 mb-10 text-center max-w-2xl text-lg">
+        <h1 className="text-4xl text-yellow-600  font-bold text-center mb-4 mt-8">
+        Krishna Murti Collection
+        </h1>
+        <p className="text-center text-gray-400 mb-10 text-lg max-w-xl mx-auto">
           Spiritual elegance meets modern design — explore our Krishna-inspired collection crafted with devotion and detail.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 w-full max-w-7xl">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {krishnaProducts.map((item) => (
             <motion.div
               key={item.id}
-              className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all cursor-pointer hover:scale-105 transform duration-300"
+              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
               onClick={() =>
                 navigate("/buyitem", {
                   state: {
@@ -71,19 +72,21 @@ const Krishna = () => {
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-full h-60 object-cover rounded-md mb-4 border border-white/10"
+                className="w-full h-48 object-cover"
               />
-              <h2 className="text-xl font-semibold">{item.name}</h2>
-              <p className="text-blue-400 font-bold">
-                {currency} {convert(item.price)}
-              </p>
+              <div className="p-4 text-black">
+                <h2 className="text-lg font-semibold mb-1">{item.name}</h2>
+                <p className="text-yellow-600 font-bold">
+                  {currency} {convert(item.price)}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
 
-        {/* 🔙 Back Button */}
+        {/* 🔙 Back to Home */}
         <motion.button
-          className="mt-16 px-6 py-3 bg-black hover:bg-gray-700 text-white font-semibold text-lg rounded-lg shadow-lg"
+          className="mt-12 mx-auto block px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white font-semibold text-lg rounded-lg shadow-lg"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => navigate("/")}
@@ -91,7 +94,7 @@ const Krishna = () => {
           🔙 Back to Home
         </motion.button>
       </motion.div>
-    </>
+    </div>
   );
 };
 

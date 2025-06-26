@@ -12,12 +12,12 @@ import h5 from "../assets/h5.jpg";
 import h6 from "../assets/h6.jpg";
 
 const HanumanMurti = [
-  { id: 301, name: "Flute Krishna Idol", price: 350, image: h1 },
-  { id: 302, name: "Bal Krishna in Swing", price: 420, image: h2 },
-  { id: 303, name: "Krishna with Radha", price: 500, image: h3 },
-  { id: 304, name: "Makhan Chor Krishna", price: 390, image: h4 },
-  { id: 305, name: "Krishna with Cow", price: 450, image: h5 },
-  { id: 306, name: "Blessing Krishna", price: 400, image: h6 },
+  { id: 301, name: "Veer Hanuman Idol", price: 350, image: h1 },
+  { id: 302, name: "Flying Hanuman Statue", price: 420, image: h2 },
+  { id: 303, name: "Panchmukhi Hanuman", price: 500, image: h3 },
+  { id: 304, name: "Hanuman with Gada", price: 390, image: h4 },
+  { id: 305, name: "Sankat Mochan Idol", price: 450, image: h5 },
+  { id: 306, name: "Meditating Hanuman", price: 400, image: h6 },
 ];
 
 const Hanuman = () => {
@@ -25,39 +25,40 @@ const Hanuman = () => {
   const { currency, convert } = useCurrency();
 
   return (
-    <>
+    <div className="bg-black min-h-screen text-yellow-800">
       {/* 🎥 Background Video */}
-      <div className="w-full relative h-screen overflow-hidden">
+      <div className="relative w-full h-[80vh] overflow-hidden">
         <video
           src={hanuman}
           autoPlay
           muted
           loop
           playsInline
-          className="w-full h-full object-cover"
+          className="absolute w-full h-full object-cover object-top"
         />
       </div>
 
-      {/* 🛕 Hanuman Murti Display */}
+      {/* 🛕 Hanuman Murti Section */}
       <motion.div
-        className="min-h-screen bg-gradient-to-br from-yellow-100 via-yellow-200 to-yellow-50 text-yellow-800 py-16 px-6 flex flex-col items-center"
+        className="py-2 px-4 sm:px-6 md:px-10 max-w-7xl mx-auto"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
       >
-        <h1 className="text-4xl font-bold mb-4">🕉️ Hanuman Murti Collection</h1>
-        <p className="text-gray-700 mb-10 text-center max-w-2xl text-lg">
+        <h1 className="text-4xl font-bold text-center mb-4 mt-8">
+          Hanuman Murti Collection
+        </h1>
+        <p className="text-center text-gray-700 mb-10 text-lg max-w-xl mx-auto">
           Divine idols of Lord Hanuman crafted with devotion, grace, and tradition.
         </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-7xl">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {HanumanMurti.map((item) => (
             <motion.div
               key={item.id}
-              className="bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-2xl shadow-lg hover:shadow-2xl transition-all cursor-pointer hover:scale-105 transform duration-300"
+              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer transition-transform"
               whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-               onClick={() =>
+              onClick={() =>
                 navigate("/buyitem", {
                   state: {
                     product: { ...item, quantity: 1 },
@@ -69,19 +70,21 @@ const Hanuman = () => {
               <img
                 src={item.image}
                 alt={item.name}
-                className="w-full h-60 object-cover rounded-md mb-4 border border-white/10"
+                className="w-full h-48 object-cover"
               />
-              <h2 className="text-xl font-semibold">{item.name}</h2>
-              <p className="text-blue-500 font-bold">
-                {currency} {convert(item.price)}
-              </p>
+              <div className="p-4 text-black">
+                <h2 className="text-lg font-semibold mb-1">{item.name}</h2>
+                <p className="text-yellow-600 font-bold">
+                  {currency} {convert(item.price)}
+                </p>
+              </div>
             </motion.div>
           ))}
         </div>
 
         {/* 🔙 Back to Home */}
         <motion.button
-          className="mt-12 px-6 py-3 bg-black hover:bg-gray-700 text-white font-semibold text-lg rounded-lg shadow-lg"
+          className="mt-12 mx-auto block px-6 py-3 bg-gray-800 hover:bg-gray-700 text-white font-semibold text-lg rounded-lg shadow-lg"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
           onClick={() => navigate("/")}
@@ -89,7 +92,7 @@ const Hanuman = () => {
           🔙 Back to Home
         </motion.button>
       </motion.div>
-    </>
+    </div>
   );
 };
 
