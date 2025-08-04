@@ -31,9 +31,7 @@ import km1 from "../assets/km1.webp";
 
 const Home = () => {
   const navigate = useNavigate();
-  const [showCurrency, setShowCurrency] = useState(true);
-  const [open, setOpen] = useState(false);
-  const { currency, setCurrency, convert } = useCurrency();
+  const { currency, convert } = useCurrency();
   const { user } = useAuth();
 
   const currencySymbols = {
@@ -281,36 +279,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* 💱 Floating Currency Switcher */}
-      {showCurrency && (
-        <div className="fixed bottom-5 right-5 z-50">
-          <motion.div
-            className="bg-gray-800 p-3 rounded-full cursor-pointer shadow-xl text-white flex items-center space-x-2"
-            whileHover={{ scale: 1.1 }}
-            onClick={() => setOpen(!open)}
-          >
-            💱 <span className="text-sm">{currency}</span>
-          </motion.div>
-          {open && (
-            <div className="mt-2 bg-white text-black rounded-md shadow-xl p-3 absolute bottom-16 right-0 w-36">
-              {["USD", "INR", "AED"].map((cur) => (
-                <div
-                  key={cur}
-                  onClick={() => {
-                    setCurrency(cur);
-                    setOpen(false);
-                  }}
-                  className={`p-2 cursor-pointer hover:bg-gray-100 rounded ${
-                    cur === currency ? "font-bold text-yellow-600" : ""
-                  }`}
-                >
-                  {cur}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+
 
       {/* 📌 Footer */}
       <footer className="py-6 bg-gray-900 text-center text-gray-400">

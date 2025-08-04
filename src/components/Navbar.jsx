@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../Context/AuthContext";
-import { FaChevronDown, FaBars, FaTimes } from "react-icons/fa";
+import { FaChevronDown, FaBars, FaTimes, FaUser, FaShoppingCart } from "react-icons/fa";
 
 const Navbar = () => {
   const { user, logout } = useAuth();
@@ -131,21 +131,15 @@ const Navbar = () => {
               Logout
             </button>
           ) : (
-            <img
-              src="/src/assets/user.png"
-              alt="User"
+            <FaUser
               onClick={() => navigate("/Loginpage")}
-              className="w-6 h-6 cursor-pointer hover:scale-105 transition"
+              className="w-6 h-6 cursor-pointer hover:scale-105 transition text-xl"
             />
           )}
 
           {/* Cart */}
           <Link to="/cart">
-            <img
-              src="/src/assets/shopping-cart.png"
-              alt="Cart"
-              className="h-6 w-6 cursor-pointer hover:scale-110 transition"
-            />
+            <FaShoppingCart className="h-6 w-6 cursor-pointer hover:scale-110 transition text-xl" />
           </Link>
         </div>
       </div>
